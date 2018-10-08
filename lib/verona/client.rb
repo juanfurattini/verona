@@ -99,7 +99,7 @@ module Verona
     end
 
     def check_status(response)
-      status, header, body = response.status.to_i, response.header, response.body
+      status, header, body = response.code.to_i, response.header, response.body
       case status
       when 200...300
         nil

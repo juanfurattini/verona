@@ -29,34 +29,34 @@ module Verona
 
   # An error which is raised when there is an unexpected response or other
   # transport error that prevents an operation from succeeding.
-  class TransmissionError < Error
+  class TransmissionError < VerificationError
   end
 
   # An exception that is raised if a redirect is required
-  class RedirectError < Error
+  class RedirectError < VerificationError
   end
 
   # A 4xx class HTTP error occurred.
-  class ClientError < Error
+  class ClientError < VerificationError
   end
 
   # A 4xx class HTTP error occurred.
-  class RateLimitError < Error
+  class RateLimitError < VerificationError
   end
 
   # A 403 HTTP error occurred.
-  class ProjectNotLinkedError < Error
+  class ProjectNotLinkedError < VerificationError
   end
 
   # A 401 HTTP error occurred.
-  class AuthorizationError < Error
+  class AuthorizationError < VerificationError
   end
 
   # A 5xx class HTTP error occurred.
-  class ServerError < Error
+  class ServerError < VerificationError
   end
 
   # Error class for problems in batch requests.
-  class BatchError < Error
+  class BatchError < VerificationError
   end
 end

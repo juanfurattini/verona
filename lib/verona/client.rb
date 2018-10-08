@@ -22,13 +22,16 @@ module Verona
     #
     # @return [Verona::Client]
     #
-    # @raise [Verona::CredentialsError] The credentials file path was not supplied or is not valid
+    # @raise [Verona::RequiredArgumentsError] At least one of the required parameters
+    #   (package, product_id, purchase_token, credentials_path) were not supplied
+    # @raise [Verona::CredentialsError] The supplied credentials file path is not valid
     def initialize(package, product_id, purchase_token, credentials_path, options = {})
       @package = package
       @product_id = product_id
       @purchase_token = purchase_token
       @credentials_path = credentials_path
       @options = options
+      check_preconditions!
       @credentials = load_credentials
     end
 
@@ -55,9 +58,16 @@ module Verona
     private
     attr_reader :package, :product_id, :purchase_token, :credentials_path, :options, :credentials
 
+    def check_preconditions!
+      [:package, :product_id, :purchase_token, :credentials_path].each { |field| check_field_presence(field) }
+    end
+
+    def check_field_presence(attribute)
+      raise Verona::RequiredArgumentsError, "Attribute #{attribute.to_s} must be present" if send(attribute.to_sym).to_s.empty?
+    end
+
     def load_credentials
-      raise CredentialsError, 'Path to credentials file must be present' unless credentials_path
-      raise CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
+      raise Verona::CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
       JSON.parse(File.read(credentials_path))
     end
 

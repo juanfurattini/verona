@@ -89,6 +89,7 @@ module Verona
       new_token_info = refresh_access_token
       credentials['access_token'] = new_token_info['access_token']
       File.open(credentials_path, 'w') { |f| f.write(credentials.to_json) }
+      @credentials = load_credentials
     end
 
     def refresh_access_token
@@ -96,9 +97,9 @@ module Verona
       uri = URI(REFRESH_TOKEN_URL)
       post_params = {
           grant_type: 'refresh_token',
-          client_id: credentials[:client_id],
-          client_secret: credentials[:client_secret],
-          refresh_token: credentials[:refresh_token] }
+          client_id: credentials['client_id'],
+          client_secret: credentials['client_secret'],
+          refresh_token: credentials['refresh_token'] }
       response = Net::HTTP.post_form(uri, post_params)
       process_response(response)
     end

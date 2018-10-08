@@ -1,3 +1,6 @@
+require 'verona/client'
+require 'verona/errors'
+
 module Verona
   class Receipt
     # For detailed explanations on these keys/values, see
@@ -76,7 +79,7 @@ module Verona
       # @return false if verify process fails
       def verify(package, product_id, purchase_token, credentials_path, options = {})
         verify!(package, product_id, purchase_token, credentials_path, options)
-      rescue VerificationError
+      rescue Verona::CredentialsError, Verona::VerificationError
         false
       end
 

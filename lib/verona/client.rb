@@ -1,11 +1,13 @@
 require 'json'
-require 'verona/errors/credentials_error'
-require 'verona/errors/verification_error'
+require 'net/https'
+require 'uri'
 require 'retriable'
+require 'verona/errors'
 require 'verona/logging'
 
 module Verona
   class Client
+    include Logging
     REFRESH_TOKEN_URL = 'https://accounts.google.com/o/oauth2/token'.freeze
     VERIFY_PURCHASE_URL = 'https://www.googleapis.com/androidpublisher/v3/applications/%{package}/purchases/products/%{product_id}/tokens/%{purchase_token}'.freeze
     RETRIABLE_ERRORS = [Verona::ServerError, Verona::RateLimitError, Verona::TransmissionError].freeze

@@ -1,6 +1,5 @@
 require 'verona/version'
-require 'verona/errors/credentials_error'
-require 'verona/errors/verification_error'
+require 'verona/errors'
 require 'verona/client'
 require 'verona/receipt'
 require 'logger'

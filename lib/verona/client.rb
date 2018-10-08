@@ -57,7 +57,7 @@ module Verona
 
     def load_credentials
       raise CredentialsError, 'Path to credentials file must be present' unless credentials_path
-      raise CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(filename)
+      raise CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
       JSON.parse(File.read(credentials_path))
     end
 

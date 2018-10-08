@@ -60,7 +60,15 @@ module Verona
     #
     # @return [Hash]
     def to_hash
-
+      {
+        kind: @kind,
+        purchase_time_millis: @purchase_time_millis,
+        purchase_state: @purchase_state,
+        consumption_state: @consumption_state,
+        developer_payload: @developer_payload,
+        order_id: @order_id,
+        purchase_type: @purchase_type
+      }
     end
 
     # Converts the receipt to json.

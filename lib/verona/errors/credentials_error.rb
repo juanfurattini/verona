@@ -1,4 +1,4 @@
-module Verona
+module Verona::Errors
   class CredentialsError < StandardError
   end
 end

@@ -95,10 +95,10 @@ module Verona
       #
       # @return [Verona::Receipt]
       #
-      # @raise [Verona::CredentialsError] The credentials file path was not supplied or is not valid
-      # @raise [Verona::ServerError] An error occurred on the server and the request can be retried
-      # @raise [Verona::ClientError] The request is invalid and should not be retried without modification
-      # @raise [Verona::AuthorizationError] Authorization is required
+      # @raise [Verona::Errors::CredentialsError] The credentials file path was not supplied or is not valid
+      # @raise [Verona::Errors::ServerError] An error occurred on the server and the request can be retried
+      # @raise [Verona::Errors::ClientError] The request is invalid and should not be retried without modification
+      # @raise [Verona::Errors::AuthorizationError] Authorization is required
       def verify!(package, product_id, purchase_token, credentials_path, options = {})
         Client.new(package, product_id, purchase_token, credentials_path, options).verify!
       end

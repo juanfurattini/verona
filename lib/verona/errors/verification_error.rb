@@ -1,29 +1,13 @@
-module Verona
+module Verona::Errors
   class VerificationError < StandardError
     attr_reader :status_code
     attr_reader :header
     attr_reader :body
 
-    def initialize(err, status_code: nil, header: nil, body: nil)
-      @cause = nil
-
-      if err.respond_to?(:backtrace)
-        super(err.message)
-        @cause = err
-      else
-        super(err.to_s)
-      end
+    def initialize(status_code: nil, header: nil, body: nil)
       @status_code = status_code
       @header = header.dup unless header.nil?
       @body = body
-    end
-
-    def backtrace
-      if @cause
-        @cause.backtrace
-      else
-        super
-      end
     end
   end
 

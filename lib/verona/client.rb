@@ -39,9 +39,9 @@ module Verona
     #
     # @return [Verona::Receipt]
     #
-    # @raise [Verona::ServerError] An error occurred on the server and the request can be retried
-    # @raise [Verona::ClientError] The request is invalid and should not be retried without modification
-    # @raise [Verona::AuthorizationError] Authorization is required
+    # @raise [Verona::Errors::ServerError] An error occurred on the server and the request can be retried
+    # @raise [Verona::Errors::ClientError] The request is invalid and should not be retried without modification
+    # @raise [Verona::Errors::AuthorizationError] Authorization is required
     def verify!
       begin
         Retriable.retriable(tries: 2, on: RETRIABLE_ERRORS, base_interval: 1, multiplier: 2) do
@@ -63,11 +63,11 @@ module Verona
     end
 
     def check_field_presence(attribute)
-      raise Verona::RequiredArgumentsError, "Attribute #{attribute.to_s} must be present" if send(attribute.to_sym).to_s.empty?
+      raise Verona::Errors::RequiredArgumentsError(attribute, :presence) if send(attribute.to_sym).to_s.empty?
     end
 
     def load_credentials
-      raise Verona::CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
+      raise Verona::Errors::CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
       JSON.parse(File.read(credentials_path))
     end
 
@@ -115,24 +115,24 @@ module Verona
       when 200...300
         nil
       when 301, 302, 303, 307
-        message ||= sprintf('Redirect to %s', header['Location'])
-        raise Verona::RedirectError.new(message, status_code: status, header: header, body: body)
+        message = sprintf('Redirect to %s', header['Location'])
+        raise Verona::Errors::RedirectError.new(status_code: status, header: header, body: body), message
       when 401
-        message ||= 'Unauthorized'
-        raise Verona::AuthorizationError.new(message, status_code: status, header: header, body: body)
+        message = 'Unauthorized'
+        raise Verona::Errors::AuthorizationError.new(status_code: status, header: header, body: body), message
       when 429
-        message ||= 'Rate limit exceeded'
-        raise Verona::RateLimitError.new(message, status_code: status, header: header, body: body)
+        message = 'Rate limit exceeded'
+        raise Verona::Errors::RateLimitError.new(status_code: status, header: header, body: body), message
       when 304, 400, 402...500
-        message ||= 'Invalid request'
-        raise Verona::ClientError.new(message, status_code: status, header: header, body: body)
+        message = 'Invalid request'
+        raise Verona::Errors::ClientError.new(status_code: status, header: header, body: body), message
       when 500...600
-        message ||= 'Server error'
-        raise Verona::ServerError.new(message, status_code: status, header: header, body: body)
+        message = 'Server error'
+        raise Verona::Errors::ServerError.new(status_code: status, header: header, body: body), message
       else
         logger.warn(sprintf('Encountered unexpected status code %s', status))
-        message ||= 'Unknown error'
-        raise Verona::TransmissionError.new(message, status_code: status, header: header, body: body)
+        message = 'Unknown error'
+        raise Verona::Errors::TransmissionError.new(status_code: status, header: header, body: body), message
       end
     end
   end

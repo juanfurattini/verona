@@ -1,13 +1,19 @@
 module Verona
   module Utils
-    def self.stringify_keys!(hash)
-      hash.keys.each do |key|
-        value = hash[key]
-        hash[key] = stringify_keys!(value) if value.is_a?(Hash)
-        hash[key] = value.map { |e| e.is_a?(Hash) ? stringify_keys!(e) : e } if value.is_a?(Array)
-        hash[key.to_s] = hash.delete(key) unless key.is_a?(String)
+    def self.stringify_keys!(object)
+      case object
+      when Array
+        object.map! { |element| stringify_keys!(element) }
+      when Hash
+        object.keys.each do |key|
+          value = object[key]
+          object[key] = stringify_keys!(value)
+          object[key.to_s] = object.delete(key)
+        end
+      else
+        # nothing
       end
-      hash
+      object
     end
   end
 end

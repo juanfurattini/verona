@@ -5,11 +5,7 @@ module Verona
       when Array
         object.map! { |element| stringify_keys!(element) }
       when Hash
-        object.keys.each do |key|
-          value = object[key]
-          object[key] = stringify_keys!(value)
-          object[key.to_s] = object.delete(key)
-        end
+        object.keys.each { |key| object[key.to_s] = stringify_keys!(object.delete(key)) }
       else
         # nothing
       end

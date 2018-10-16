@@ -12,3 +12,6 @@
 
 # ruby mine files
 .idea
+
+# mac os fields
+**/.DS_Store

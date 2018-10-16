@@ -1,8 +1,10 @@
 require 'verona/version'
+require 'verona/logging'
+require 'verona/utils'
 require 'verona/errors'
+require 'verona/credentials'
 require 'verona/client'
 require 'verona/receipt'
-require 'logger'
 
 module Verona
   private_constant :Client
@@ -28,12 +30,12 @@ module Verona
   end
 
   # Check to see if client is being used in a Rails environment and get the logger if present.
-  # Setting the ENV variable 'GOOGLE_API_USE_RAILS_LOGGER' to false will force the client
+  # Setting the ENV variable 'VERONA_USE_RAILS_LOGGER' to false will force the client
   # to use its own logger.
   #
   # @return [Logger]
   def self.rails_logger
-    if 'true' == ENV.fetch('GOOGLE_API_USE_RAILS_LOGGER', 'true') &&
+    if 'true' == ENV.fetch('VERONA_USE_RAILS_LOGGER', 'true') &&
         defined?(::Rails) &&
         ::Rails.respond_to?(:logger) &&
         !::Rails.logger.nil?

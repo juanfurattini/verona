@@ -1,6 +1,3 @@
-require 'verona/client'
-require 'verona/errors'
-
 module Verona
   class Receipt
     # For detailed explanations on these keys/values, see
@@ -71,14 +68,14 @@ module Verona
       }
     end
 
+    alias_method :to_h, :to_hash
+
     # Converts the receipt to json.
     #
     # @return [String]
     def to_json
       to_hash.to_json
     end
-
-    alias_method :to_h, :to_hash
 
     class << self
       # Executes the purchase verification process.

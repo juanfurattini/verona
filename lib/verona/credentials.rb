@@ -2,25 +2,21 @@ module Verona
   class Credentials
     attr_reader :client_id, :client_secret, :access_token, :refresh_token
 
-    # Initializes the credentials.
-    #
-    # @return [Verona::Credentials]
-    def initialize(credentials_path)
-      @credentials_path = credentials_path
-    end
-
     # Load credentials from file.
     #
     # @return [Verona::Credentials]
     #
     # @raise [Verona::Errors::CredentialsError] The supplied credentials file path is not valid
     def load!
+      raise Verona::Errors::CredentialsError, 'Credentials file path was not supplied' unless File.file?(Verona.not_present?(credentials_path))
       raise Verona::Errors::CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
       credentials_hash = JSON.parse(File.read(credentials_path))
       set_attributes(credentials_hash)
     end
 
     # Updates in place the credentials and updates the credentials file.
+    #
+    # @param [Hash] updated_values: the updated attributes
     #
     # @return [Verona::Credentials]
     def update!(updated_values = {})
@@ -55,8 +51,6 @@ module Verona
     end
 
     private
-    attr_reader :credentials_path
-
     def persist_credentials!
       File.open(credentials_path, 'w') { |f| f.write(to_json) }
     end
@@ -69,5 +63,12 @@ module Verona
       @refresh_token = credentials_hash['refresh_token']
     end
 
+    def credentials_path
+      configuration.credentials_file_path
+    end
+
+    def configuration
+      Verona.configuration
+    end
   end
 end

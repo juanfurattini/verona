@@ -15,16 +15,23 @@ There are two reasons why you should verify in-app purchase receipts on the serv
 ```ruby
 require 'verona'
 
+Verona.configure do |config|
+  # if true the logging will be performed via Rails.logger
+  # if false (default) the logging will be peperformed via STDOUT
+  config.use_rails_logger = true
+  # path to your credentials json file
+  config.credentials_file_path = 'some/path/to/credentials.json'
+end
+
 package = 'com.somepackage'
 product_id = 'some_product_identifier'
 purchase_token = 'some_hash_token'
-credentials_path = 'path_to_credentials_file'
 
 begin
-  receipt = Verona::Receipt.verify(package, product_id, purchase_token, credentials_path)
-  p receipt.to_h
+  receipt = Verona::Receipt.verify(package, product_id, purchase_token)
+  puts receipt.to_h
 rescue => e
-  p e.message
+  puts e.message
 end
 ```
 

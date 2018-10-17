@@ -82,8 +82,8 @@ module Verona
       #
       # @return [Verona::Receipt] if verify process succeed
       # @return false if verify process fails
-      def verify(package, product_id, purchase_token, credentials_path, options = {})
-        verify!(package, product_id, purchase_token, credentials_path, options)
+      def verify(package, product_id, purchase_token, options = {})
+        verify!(package, product_id, purchase_token, options)
       rescue Verona::CredentialsError, Verona::VerificationError
         false
       end
@@ -96,8 +96,8 @@ module Verona
       # @raise [Verona::Errors::ServerError] An error occurred on the server and the request can be retried
       # @raise [Verona::Errors::ClientError] The request is invalid and should not be retried without modification
       # @raise [Verona::Errors::AuthorizationError] Authorization is required
-      def verify!(package, product_id, purchase_token, credentials_path, options = {})
-        Client.new(package, product_id, purchase_token, credentials_path, options).verify!
+      def verify!(package, product_id, purchase_token, options = {})
+        Client.new(package, product_id, purchase_token, options).verify!
       end
 
       alias_method :validate, :verify

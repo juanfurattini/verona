@@ -16,20 +16,18 @@ module Verona
     # @param [String] package: the package of the product
     # @param [String] product_id: the product identifier
     # @param [String] purchase_token: the token of the product purchase
-    # @param [String] credentials_path: the path for the credentials json file
     # @param [Hash] options: a hash with custom options
     #
     # @return [Verona::Client]
     #
     # @raise [Verona::Errors::RequiredArgumentsError] At least one of the required parameters
-    #   (package, product_id, purchase_token, credentials_path) were not supplied
-    def initialize(package, product_id, purchase_token, credentials_path, options = {})
+    #   (package, product_id, purchase_token) were not supplied
+    def initialize(package, product_id, purchase_token, options = {})
       @package = package
       @product_id = product_id
       @purchase_token = purchase_token
-      @credentials_path = credentials_path
       @options = options
-      @credentials = Verona::Credentials.new(credentials_path)
+      @credentials = Verona::Credentials.new
       check_preconditions!
     end
 
@@ -56,11 +54,11 @@ module Verona
     alias_method :validate!, :verify!
 
     private
-    attr_reader :package, :product_id, :purchase_token, :credentials_path, :options, :credentials
+    attr_reader :package, :product_id, :purchase_token, :options, :credentials
 
     def check_preconditions!
-      required_fields = [:package, :product_id, :purchase_token, :credentials_path]
-      not_present = required_fields.select { |field| !is_field_present?(field) }
+      required_fields = [:package, :product_id, :purchase_token]
+      not_present = required_fields.select { |field| Verona.not_present?(field) }
       raise Verona::Errors::RequiredArgumentsError(not_present, :presence) unless not_present.empty?
     end
 

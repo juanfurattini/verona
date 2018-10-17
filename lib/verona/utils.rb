@@ -11,5 +11,13 @@ module Verona
       end
       object
     end
+
+    def self.present?(object)
+      object.to_s.empty?
+    end
+
+    def self.not_present?(object)
+      !present?(object)
+    end
   end
 end

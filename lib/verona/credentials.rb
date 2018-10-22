@@ -8,7 +8,7 @@ module Verona
     #
     # @raise [Verona::Errors::CredentialsError] The supplied credentials file path is not valid
     def load!
-      raise Verona::Errors::CredentialsError, 'Credentials file path was not supplied' unless File.file?(Verona.not_present?(credentials_path))
+      raise Verona::Errors::CredentialsError, 'Credentials file path was not supplied' unless Verona::Utils.not_present?(credentials_path)
       raise Verona::Errors::CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
       credentials_hash = JSON.parse(File.read(credentials_path))
       set_attributes(credentials_hash)

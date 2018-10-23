@@ -48,6 +48,8 @@ module Verona
             Verona::Receipt.new(receipt_attributes)
           end
         end
+      rescue => e
+        # Refactorize this!
       end
     end
 

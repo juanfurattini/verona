@@ -1,5 +1,5 @@
 RSpec.describe Verona do
-  it "has a version number" do
-    expect(Verona::VERSION).not_to be nil
+  it "version must be 0.1.0" do
+    expect(Verona::VERSION).to eq '0.1.0'
   end
 end

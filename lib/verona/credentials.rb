@@ -8,7 +8,7 @@ module Verona
     #
     # @raise [Verona::Errors::CredentialsError] The supplied credentials file path is not valid
     def load!
-      raise Verona::Errors::CredentialsError, 'Credentials file path was not supplied' unless Verona::Utils.not_present?(credentials_path)
+      raise Verona::Errors::CredentialsError, 'Credentials file path was not supplied' unless credentials_path.present?
       raise Verona::Errors::CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
       credentials_hash = JSON.parse(File.read(credentials_path))
       set_attributes(credentials_hash)
@@ -21,7 +21,7 @@ module Verona
     # @return [Verona::Credentials]
     def update!(updated_values = {})
       return self if updated_values.empty?
-      Verona::Utils.stringify_keys!(updated_values)
+      updated_values.stringify_keys!
       updated_attributes = to_hash.merge(updated_values)
       return self if to_hash == updated_attributes
       set_attributes(updated_attributes)
@@ -56,7 +56,7 @@ module Verona
     end
 
     def set_attributes(credentials_hash = {})
-      Verona::Utils.stringify_keys!(credentials_hash)
+      credentials_hash.stringify_keys!
       @client_id = credentials_hash['client_id']
       @client_secret = credentials_hash['client_secret']
       @access_token = credentials_hash['access_token']

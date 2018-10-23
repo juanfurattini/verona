@@ -1,7 +1,7 @@
+require 'core_extensions'
 require 'verona/version'
 require 'verona/configuration'
 require 'verona/logging'
-require 'verona/utils'
 require 'verona/errors'
 require 'verona/credentials'
 require 'verona/client'

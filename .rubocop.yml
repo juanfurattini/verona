@@ -1,0 +1,7 @@
+
+Metrics/LineLength:
+  Max: 100
+
+Lint/UselessAccessModifier:
+  ContextCreatingMethods:
+    - context

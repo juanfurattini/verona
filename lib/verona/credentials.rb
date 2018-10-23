@@ -10,6 +10,7 @@ module Verona
     def load!
       raise Verona::Errors::CredentialsError, 'Credentials file path was not supplied' unless credentials_path.present?
       raise Verona::Errors::CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
+
       credentials_hash = JSON.parse(File.read(credentials_path))
       set_attributes(credentials_hash)
     end
@@ -41,7 +42,7 @@ module Verona
       }
     end
 
-    alias_method :to_h, :to_hash
+    alias to_h to_hash
 
     # Converts the receipt to json.
     #
@@ -51,6 +52,7 @@ module Verona
     end
 
     private
+
     def persist_credentials!
       File.open(credentials_path, 'w') { |f| f.write(to_json) }
     end

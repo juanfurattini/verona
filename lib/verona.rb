@@ -24,24 +24,26 @@ module Verona
     @logger ||= rails_logger || default_logger
   end
 
-  private
+  class << self
+    private
 
-  # Create and configure a logger
-  # @return [Logger]
-  def self.default_logger
-    Logger.new($stdout).tap { |logger| logger.level = Logger::WARN }
-  end
+    # Create and configure a logger
+    # @return [Logger]
+    def default_logger
+      Logger.new($stdout).tap { |logger| logger.level = Logger::WARN }
+    end
 
-  # Check to see if client is being used in a Rails environment and get the logger if present.
-  # Setting the ENV variable 'VERONA_USE_RAILS_LOGGER' to false will force the client
-  # to use its own logger.
-  #
-  # @return [Logger]
-  def self.rails_logger
-    return ::Rails.logger if configuration.use_rails_logger? && can_use_rails_logger?
-  end
+    # Check to see if client is being used in a Rails environment and get the logger if present.
+    # Setting the ENV variable 'VERONA_USE_RAILS_LOGGER' to false will force the client
+    # to use its own logger.
+    #
+    # @return [Logger]
+    def rails_logger
+      ::Rails.logger if configuration.use_rails_logger? && can_use_rails_logger?
+    end
 
-  def self.can_use_rails_logger?
-    defined?(::Rails) && ::Rails.respond_to?(:logger) && !::Rails.logger.nil?
+    def can_use_rails_logger?
+      defined?(::Rails) && ::Rails.respond_to?(:logger) && !::Rails.logger.nil?
+    end
   end
 end

@@ -68,7 +68,7 @@ module Verona
       }
     end
 
-    alias_method :to_h, :to_hash
+    alias to_h to_hash
 
     # Converts the receipt to json.
     #
@@ -100,8 +100,8 @@ module Verona
         Client.new(package, product_id, purchase_token, options).verify!
       end
 
-      alias_method :validate, :verify
-      alias_method :validate!, :verify!
+      alias validate verify
+      alias validate! verify!
     end
   end
 end

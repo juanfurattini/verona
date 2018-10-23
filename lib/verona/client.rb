@@ -51,9 +51,10 @@ module Verona
       end
     end
 
-    alias_method :validate!, :verify!
+    alias validate! verify!
 
     private
+
     attr_reader :package, :product_id, :purchase_token, :options, :credentials
 
     def check_preconditions!

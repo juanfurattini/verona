@@ -9,11 +9,12 @@ module CoreExtensions
       end
 
       private
+
       def stringify_keys_impl!(object)
         case object
-        when Array
+        when ::Array
           object.map! { |element| stringify_keys_impl!(element) }
-        when Hash
+        when ::Hash
           object.keys.each { |key| object[key.to_s] = stringify_keys_impl!(object.delete(key)) }
         else
           # nothing

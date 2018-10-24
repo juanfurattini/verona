@@ -2,6 +2,16 @@
 Metrics/LineLength:
   Max: 100
 
+Documentation:
+  Enabled: false
+
 Lint/UselessAccessModifier:
   ContextCreatingMethods:
     - context
+
+Metrics/BlockLength:
+  Exclude:
+  - 'Rakefile'
+  - '**/*.rake'
+  - 'spec/**/*.rb'
+  - 'test/**/*.rb'

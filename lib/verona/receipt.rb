@@ -87,7 +87,7 @@ module Verona
       # @return false if verify process fails
       def verify(package, product_id, purchase_token, options = {})
         verify!(package, product_id, purchase_token, options)
-      rescue Verona::CredentialsError, Verona::VerificationError
+      rescue Verona::Errors::CredentialsError, Verona::Errors::VerificationError
         false
       end
 

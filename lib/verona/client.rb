@@ -8,6 +8,7 @@ require 'retriable'
 module Verona
   class Client
     include Logging
+    include Hooks
     REFRESH_TOKEN_URL = 'https://accounts.google.com/o/oauth2/token'
     VERIFY_PURCHASE_URL = 'https://www.googleapis.com/androidpublisher/v3/applications/%<package>s/purchases/products/%<product_id>s/tokens/%<purchase_token>s'
     RETRIABLE_ERRORS = [
@@ -17,7 +18,7 @@ module Verona
     ].freeze
     UPDATABLE_CREDENTIALS_FIELDS = [:access_token].freeze
 
-    post_construct :check_preconditions!
+    after_initialize :check_preconditions!
 
     # Initializes the client.
     #
@@ -36,7 +37,6 @@ module Verona
       @purchase_token = purchase_token
       @options = options
       @credentials = Verona::Credentials.new
-      # check_preconditions!
     end
 
     # Executes the purchase verification process.
@@ -75,7 +75,7 @@ module Verona
     attr_reader :package, :product_id, :purchase_token, :options, :credentials
 
     def check_preconditions!
-      puts 'checking conditions'
+      logger.debug('check_preconditions!')
       required_fields = %i[package product_id purchase_token]
       not_present = required_fields.select(&:not_present?)
       raise Verona::Errors::RequiredArgumentsError(not_present, :presence) unless not_present.empty?
@@ -83,7 +83,7 @@ module Verona
 
     def validate_purchase
       url = generate_validate_url
-      logger.debug { format('Sending HTTP %s', url) }
+      logger.debug("Sending HTTP #{url}")
       uri = URI(generate_validate_url)
       params = { access_token: credentials.access_token }
       uri.query = URI.encode_www_form(params)
@@ -103,7 +103,7 @@ module Verona
     end
 
     def refresh_access_token
-      logger.debug { "Sending HTTP #{REFRESH_TOKEN_URL}" }
+      logger.debug("Sending HTTP #{REFRESH_TOKEN_URL}")
       uri = URI(REFRESH_TOKEN_URL)
       post_params = {
         grant_type: 'refresh_token',

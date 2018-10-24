@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'core_extensions'
 require 'verona/version'
 require 'verona/configuration'

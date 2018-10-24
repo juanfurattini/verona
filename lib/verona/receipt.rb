@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Verona
   class Receipt
     # For detailed explanations on these keys/values, see
@@ -31,7 +33,8 @@ module Verona
     # Type: string
     attr_reader :order_id
 
-    # The type of purchase of the inapp product. This field is only set if this purchase was not made using
+    # The type of purchase of the inapp product. This field
+    # is only set if this purchase was not made using
     # the standard in-app billing flow. Possible values are:
     # 0. Test (i.e. purchased from a license testing account)
     # 1. Promo (i.e. purchased using a promo code)
@@ -92,10 +95,19 @@ module Verona
       #
       # @return [Verona::Receipt]
       #
-      # @raise [Verona::Errors::CredentialsError] The credentials file path was not supplied or is not valid
-      # @raise [Verona::Errors::ServerError] An error occurred on the server and the request can be retried
-      # @raise [Verona::Errors::ClientError] The request is invalid and should not be retried without modification
+      # @raise [Verona::Errors::CredentialsError] The credentials file path was not
+      #   supplied or is not valid
+      # @raise [Verona::Errors::ServerError] An error occurred on the server and
+      #   the request can be retried
+      # @raise [Verona::Errors::ClientError] The request is invalid and should not
+      #   be retried without modification
       # @raise [Verona::Errors::AuthorizationError] Authorization is required
+      # @raise [Verona::Errors::RedirectError] A redirect is required and should not
+      #   be retried without modification
+      # @raise [Verona::Errors::RateLimitError] A limitation occurred on in message
+      #   transport and the request can be retried
+      # @raise [Verona::Errors::TransmissionError] A transport error occurred on the
+      #   message transport and the request can be retried
       def verify!(package, product_id, purchase_token, options = {})
         Client.new(package, product_id, purchase_token, options).verify!
       end

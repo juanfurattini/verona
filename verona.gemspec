@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # lib = File.expand_path('../lib', __FILE__)
 # $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
@@ -5,16 +6,16 @@ $LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'verona/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'verona'
-  spec.version       = Verona::VERSION
-  spec.authors       = ['Juan Furattini']
-  spec.email         = 'juan.furattini@gmail.com'
-  spec.platform      = Gem::Platform::RUBY
+  spec.name = 'verona'
+  spec.version = Verona::VERSION
+  spec.authors = ['Juan Furattini']
+  spec.email = 'juan.furattini@gmail.com'
+  spec.platform = Gem::Platform::RUBY
 
-  spec.summary       = 'Google PlayStore In-App Purchase Receipt Verification'
-  spec.description   = 'Ruby Gem for In-App Purchase Receipt Verification'
-  spec.homepage      = 'https://www.linkedin.com/in/furattinijuan/'
-  spec.license       = 'MIT'
+  spec.summary = 'Google PlayStore In-App Purchase Receipt Verification'
+  spec.description = 'Ruby Gem for In-App Purchase Receipt Verification'
+  spec.homepage = 'https://www.linkedin.com/in/furattinijuan/'
+  spec.license = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -25,9 +26,9 @@ Gem::Specification.new do |spec|
   #     'public gem pushes.'
   # end
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  spec.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
+  spec.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
+  spec.executables = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
   spec.add_dependency 'json'
@@ -40,4 +41,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.6'
   spec.add_development_dependency 'rspec-its', '~> 1.2'
   spec.add_development_dependency 'rubocop'
-  end
+end

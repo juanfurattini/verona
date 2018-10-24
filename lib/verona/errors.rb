@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'verona/errors/credentials_error'
 require 'verona/errors/verification_error'
 require 'verona/errors/required_arguments_error'

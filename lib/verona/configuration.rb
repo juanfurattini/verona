@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Verona
   class Configuration
     attr_accessor :use_rails_logger, :credentials_file_path
@@ -8,7 +10,7 @@ module Verona
     end
 
     def use_rails_logger?
-      !!use_rails_logger
+      !(!use_rails_logger)
     end
   end
 end

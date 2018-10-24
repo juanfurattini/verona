@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Verona
   class Credentials
     attr_reader :client_id, :client_secret, :access_token, :refresh_token
@@ -12,7 +14,7 @@ module Verona
       raise Verona::Errors::CredentialsError, 'Supplied credentials file path is not valid' unless File.file?(credentials_path)
 
       credentials_hash = JSON.parse(File.read(credentials_path))
-      set_attributes(credentials_hash)
+      attributes(credentials_hash)
     end
 
     # Updates in place the credentials and updates the credentials file.
@@ -22,10 +24,12 @@ module Verona
     # @return [Verona::Credentials]
     def update!(updated_values = {})
       return self if updated_values.empty?
+
       updated_values.stringify_keys!
       updated_attributes = to_hash.merge(updated_values)
       return self if to_hash == updated_attributes
-      set_attributes(updated_attributes)
+
+      attributes(updated_attributes)
       persist_credentials!
       self
     end
@@ -35,10 +39,10 @@ module Verona
     # @return [Hash]
     def to_hash
       {
-          client_id: client_id,
-          client_secret: client_secret,
-          access_token: access_token,
-          refresh_token: refresh_token
+        client_id: client_id,
+        client_secret: client_secret,
+        access_token: access_token,
+        refresh_token: refresh_token
       }
     end
 
@@ -57,7 +61,7 @@ module Verona
       File.open(credentials_path, 'w') { |f| f.write(to_json) }
     end
 
-    def set_attributes(credentials_hash = {})
+    def attributes(credentials_hash = {})
       credentials_hash.stringify_keys!
       @client_id = credentials_hash['client_id']
       @client_secret = credentials_hash['client_secret']

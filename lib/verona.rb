@@ -9,6 +9,8 @@ require 'verona/errors'
 require 'verona/credentials'
 require 'verona/client'
 require 'verona/receipt'
+require 'verona/cancel_survey_result'
+require 'verona/subscription'
 
 module Verona
   private_constant :Client

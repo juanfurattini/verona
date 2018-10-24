@@ -12,6 +12,8 @@ There are two reasons why you should verify in-app purchase receipts on the serv
 
 ### Basic
 
+#### Configure
+
 ```ruby
 require 'verona'
 
@@ -22,21 +24,37 @@ Verona.configure do |config|
   # path to your credentials json file
   config.credentials_file_path = 'some/path/to/credentials.json'
 end
+```
 
+#### Verifying product purchase
+```ruby
 package = 'com.somepackage'
-product_id = 'some_product_identifier'
+element_id = 'some_product_identifier'
 purchase_token = 'some_hash_token'
 
 begin
-  receipt = Verona::Receipt.verify(package, product_id, purchase_token)
+  receipt = Verona::Receipt.verify(package, element_id, purchase_token)
+  puts "Valid receipt?: #{receipt.valid?}"
   puts receipt.to_h
 rescue => e
   puts e.message
 end
 ```
 
-### For Auto-Renewable
-Pending
+#### Verifying product subscription
+```ruby
+package = 'com.somepackage'
+element_id = 'some_subscription_identifier'
+purchase_token = 'some_hash_token'
+
+begin
+  subscription = Verona::Subscription.verify(package, element_id, purchase_token)
+  puts "Valid receipt?: #{subscription.valid?}"
+  puts subscription.to_h
+rescue => e
+  puts e.message
+end
+```
 
 ## Command Line Interface
 Pending

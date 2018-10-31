@@ -26,8 +26,8 @@ module Verona
     #
     # @return [Verona::Subscription]
     def initialize(attributes = {})
-      @cancel_survey_reason = attributes['cancelSurveyReason']
-      @user_input_cancel_reason = attributes['userInputCancelReason']
+      @cancel_survey_reason = attributes.dig('cancelSurveyReason')
+      @user_input_cancel_reason = attributes.dig('userInputCancelReason')
     end
 
     # Converts the subscription to hash.

@@ -161,26 +161,32 @@ module Verona
     #
     # @return [Verona::Subscription]
     def initialize(attributes = {})
-      @kind = attributes['kind']
-      @start_time_millis = attributes['startTimeMillis']
-      @expiry_time_millis = attributes['expiryTimeMillis']
-      @auto_renewing = attributes['autoRenewing']
-      @price_currency_code = attributes['priceCurrencyCode']
-      @price_amount_micros = attributes['priceAmountMicros']
-      @country_code = attributes['countryCode']
-      @developer_payload = attributes['developerPayload']
-      @payment_state = attributes['paymentState']
-      @cancel_reason = attributes['cancelReason']
-      @user_cancellation_time_millis = attributes['userCancellationTimeMillis']
-      @cancel_survey_result = Verona::CancelSurveyResult.new(attributes['cancelSurveyResult'])
-      @order_id = attributes['orderId']
-      @linked_purchase_token = attributes['linkedPurchaseToken']
-      @purchase_type = attributes['purchaseType']
-      @profile_name = attributes['profileName']
-      @email_address = attributes['emailAddress']
-      @given_name = attributes['givenName']
-      @family_name = attributes['familyName']
-      @profile_id = attributes['profileId']
+      @kind = attributes.dig('kind')
+      @start_time_millis = attributes.dig('startTimeMillis')
+      @expiry_time_millis = attributes.dig('expiryTimeMillis')
+      @auto_renewing = attributes.dig('autoRenewing')
+      @price_currency_code = attributes.dig('priceCurrencyCode')
+      @price_amount_micros = attributes.dig('priceAmountMicros')
+      @country_code = attributes.dig('countryCode')
+      @developer_payload = attributes.dig('developerPayload')
+      @payment_state = attributes.dig('paymentState')
+      @cancel_reason = attributes.dig('cancelReason')
+      @user_cancellation_time_millis = attributes.dig('userCancellationTimeMillis')
+      @cancel_survey_result = build_cancel_survey_result(attributes)
+      @order_id = attributes.dig('orderId')
+      @linked_purchase_token = attributes.dig('linkedPurchaseToken')
+      @purchase_type = attributes.dig('purchaseType')
+      @profile_name = attributes.dig('profileName')
+      @email_address = attributes.dig('emailAddress')
+      @given_name = attributes.dig('givenName')
+      @family_name = attributes.dig('familyName')
+      @profile_id = attributes.dig('profileId')
+    end
+
+    def build_cancel_survey_result(attributes)
+      return unless attributes.key?('cancelSurveyResult')
+
+      Verona::CancelSurveyResult.new(attributes.fetch('cancelSurveyResult', {}))
     end
 
     def valid?
@@ -209,7 +215,7 @@ module Verona
         payment_state: @payment_state,
         cancel_reason: @cancel_reason,
         user_cancellation_time_millis: @user_cancellation_time_millis,
-        cancel_survey_result: @cancel_survey_result.to_hash,
+        cancel_survey_result: @cancel_survey_result&.to_hash,
         order_id: @order_id,
         linked_purchase_token: @linked_purchase_token,
         purchase_type: @purchase_type,
